@@ -1,0 +1,53 @@
+<#
+.Synopsis
+   POSH Funktsiooni kirjutamist hõlbustav näidis funktsioon
+.DESCRIPTION
+   Kasuta seda näidist, et paremini mõista POSH funktsiooni kirjutamist, funktsiooni laadimiseks kasuta ALT+J ning vali "Cmdlet (advanced-funtion)"
+
+   Loe lisaks neid help faile:
+
+   about_Functions_CmdletBindingAttribute
+   about_Functions_OutputTypeAttribute
+   about_Functions_Advanced_Parameters
+.EXAMPLE
+   Template-Function -Inputtext "Hello World" -Color Green
+.EXAMPLE
+   Temfun -Color Yellow
+#>
+function Template-Function
+{
+    # Get-Help about_Functions_CmdletBindingAttribute
+    [CmdletBinding()]
+    # Tekitab aliase 
+    [Alias("Temfun")]
+    # Get-Help about_Functions_OutputTypeAttribute
+    [OutputType([int])]
+    Param
+    (
+        # Get-Help about_Functions_Advanced_Parameters
+        [Parameter(Mandatory=$false,
+                   ValueFromPipelineByPropertyName=$true,
+                   Position=0)]
+        $Inputtext,
+
+        # Param2 help description
+        [Parameter(Mandatory=$true,
+                   ValueFromPipelineByPropertyName=$true,
+                   Position=1)]
+                   [ValidateSet("Red","Yellow","Green")]
+        $Color
+    )
+
+
+    Begin
+    {
+    if(!$Inputtext) {$Inputtext = "Hello World"}
+    }
+    Process
+    {
+    Write-Host $inputtext -ForegroundColor $color
+    }
+    End
+    {
+    }
+}
