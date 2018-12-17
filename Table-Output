@@ -1,0 +1,59 @@
+<#
+.Synopsis
+   POSH Tabel väljavõtte tekitamine
+.DESCRIPTION
+   Kasuta seda näidist, et paremini mõista tabelväljavõtte tekitamist
+.EXAMPLE
+   Get-FolderStats C:\Users
+.EXAMPLE
+   Get-FolderStats C:\Users\Administrator
+#>
+function Get-FolderStats
+{
+    [CmdletBinding()]
+    [Alias()]
+    [OutputType([int])]
+    Param
+    (
+        # Param1 help description
+        [Parameter(Mandatory=$true,
+                   ValueFromPipelineByPropertyName=$true,
+                   Position=0)]
+        $folder
+    )
+
+    Begin
+    {
+    ### Create Table object
+    $table = New-Object system.Data.DataTable “$filereport”
+
+    ### Define Columns
+    $col1 = New-Object system.Data.DataColumn Folders,([string])
+    $col2 = New-Object system.Data.DataColumn Files,([string])
+    $col3 = New-Object system.Data.DataColumn Errors,([string])
+
+    ### Add the Columns
+    $table.columns.add($col1)
+    $table.columns.add($col2)
+    $table.columns.add($col3)
+    }
+    Process
+    {
+    $Error.Clear()
+    $folders = Get-ChildItem $folder -Force -Recurse -Directory -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
+    $files = Get-ChildItem $folder -Force -Recurse -File -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
+    $row = $table.NewRow()
+
+    ### Enter data in the row
+    $row.Folders = $folders.count
+    $row.Files = $files.count
+    $row.Errors = $Error.count
+
+    ### Add the row to the table
+    $table.Rows.Add($row)
+    }
+    End
+    {
+    $table | format-table -AutoSize
+    }
+}
