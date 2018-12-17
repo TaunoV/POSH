@@ -15,7 +15,7 @@ function Get-FolderStats
     [OutputType([int])]
     Param
     (
-        # Param1 help description
+        # Defineeri path
         [Parameter(Mandatory=$true,
                    ValueFromPipelineByPropertyName=$true,
                    Position=0)]
