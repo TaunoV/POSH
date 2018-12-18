@@ -1,7 +1,8 @@
-$x = 1
+$x = "A"
 switch ($x)
  {
      '0' {Write-Host $x -ForegroundColor Red}
+     {$_ -in 'A','B','C'} {Write-Host "Letter A,B or C Entered" -ForegroundColor Cyan}
      '1' {Write-Host $x -ForegroundColor Green}
      Default {Write-Host "Unexprected input" -ForegroundColor Yellow}
  }
