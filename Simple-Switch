@@ -1,0 +1,7 @@
+$x = 1
+switch ($x)
+ {
+     '0' {Write-Host $x -ForegroundColor Red}
+     '1' {Write-Host $x -ForegroundColor Green}
+     Default {Write-Host "Unexprected input" -ForegroundColor Yellow}
+ }
