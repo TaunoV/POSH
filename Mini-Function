@@ -1,0 +1,7 @@
+function Verb-Noun{
+Param($Param1)
+    Process
+    {
+    Write-Host $Param1 -ForegroundColor Green
+    }
+}
