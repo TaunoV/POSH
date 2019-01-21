@@ -1,0 +1,21 @@
+$volume = "C:"
+Get-BitLockerVolume -MountPoint $volume | Disable-BitLocker
+do
+{
+ Start-Sleep -Seconds 15
+ $x = (Get-BitLockerVolume -MountPoint C:).VolumeStatus
+ Write-Host (100-(Get-BitLockerVolume $volume).EncryptionPercentage)"% Decrypted" -ForegroundColor Yellow
+}
+until ($x -eq "FullyDecrypted")
+Get-BitLockerVolume -MountPoint $volume | Add-BitLockerKeyProtector -RecoveryPasswordProtector
+$KeyID = (Get-BitLockerVolume -MountPoint $volume | select -ExpandProperty KeyProtector | where KeyProtectorType -eq RecoveryPassword).KeyProtectorId
+Backup-BitLockerKeyProtector -MountPoint $volume -KeyProtectorId $KeyID
+Enable-BitLocker -MountPoint $volume -TpmProtector -SkipHardwareTest -UsedSpaceOnly
+do
+{
+ Start-Sleep -Seconds 15
+ $x = (Get-BitLockerVolume -MountPoint C:).VolumeStatus
+ Write-Host (Get-BitLockerVolume $volume).EncryptionPercentage"% Encrypted" -ForegroundColor Yellow   
+}
+until ($x -eq "FullyEncrypted")
+Write-Host "All done!" -ForegroundColor Green
