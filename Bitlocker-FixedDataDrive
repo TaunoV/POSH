@@ -1,0 +1,14 @@
+### Define Volume
+$volume = "E:"
+### Encrypt Volume
+$key = Enable-BitLocker -MountPoint $volume -RecoveryPasswordProtector -SkipHardwareTest -UsedSpaceOnly
+Backup-BitLockerKeyProtector -MountPoint $volume -KeyProtectorId $key.KeyProtector.KeyProtectorId -ErrorAction Stop
+Enable-BitLockerAutoUnlock -MountPoint $volume
+do
+{
+ Start-Sleep -Seconds 10
+ $x = (Get-BitLockerVolume -MountPoint $volume).VolumeStatus
+ Write-Host (Get-BitLockerVolume $volume).EncryptionPercentage"% Encrypted" -ForegroundColor Yellow   
+}
+until ($x -eq "FullyEncrypted")
+Write-Host "Volume encrypted with"(Get-BitLockerVolume $volume).EncryptionMethod"!" -ForegroundColor Green
