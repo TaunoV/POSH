@@ -12,3 +12,10 @@ do
 }
 until ($x -eq "FullyEncrypted")
 Write-Host "Volume encrypted with"(Get-BitLockerVolume $volume).EncryptionMethod"!" -ForegroundColor Green
+
+
+<#
+1. Krüpteerib defineeritud ketta $volume
+2. Teeb võtmete bakcupi AD'se (GPO säte tuleb AD poolt)
+3. Raporteerib progressi kuni valmis saab
+#>
