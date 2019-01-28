@@ -9,5 +9,7 @@ MORE THAN
 Get-WmiObject -Namespace root/cimv2  -Query "Select * from Win32_bios where SMBIOSBIOSVersion > '1.6.13'"
 AND
 Get-WmiObject -Namespace root/cimv2  -Query "Select * from Win32_PnPSignedDriver where Description='PERC H730P Mini' AND DriverVersion<'6.603.06.00'"
-###
+### MS KB
 https://docs.microsoft.com/en-us/windows/desktop/wmisdk/wql-operators
+### WQL Examples
+https://www.codeproject.com/Articles/46390/WMI-Query-Language-by-Example
