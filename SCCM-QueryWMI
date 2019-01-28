@@ -7,3 +7,5 @@ LESS THAN
 Get-WmiObject -Namespace root/cimv2  -Query "Select * from Win32_bios where SMBIOSBIOSVersion < '1.6.13'"
 MORE THAN
 Get-WmiObject -Namespace root/cimv2  -Query "Select * from Win32_bios where SMBIOSBIOSVersion > '1.6.13'"
+###
+https://docs.microsoft.com/en-us/windows/desktop/wmisdk/wql-operators
