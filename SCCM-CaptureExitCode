@@ -1,0 +1,2 @@
+$install = Start-Process .\Demo_Install.EXE -ArgumentList "/S" -Wait -PassThru
+$install.ExitCode
