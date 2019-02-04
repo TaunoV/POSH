@@ -1,0 +1,3 @@
+$date1 = Get-Date
+$date2 = Get-Date
+$datediff = New-TimeSpan -Start $date1 -End $date2 | select Days, Hours, Minutes, Seconds
