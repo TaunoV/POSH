@@ -1,0 +1,16 @@
+### Get WIM info
+DISM /Get-ImageInfo /imagefile:"E:\sources\boot.wim"
+
+### Mount WIM
+mkdir C:\DISM
+DISM /Mount-image /imagefile:"D:\sources\boot.wim" /index:1 /MountDir:C:\DISM
+
+### Dismount and commit
+DISM /Unmount-image  /MountDir:C:\DISM /commit
+
+### Dismount and discard
+DISM /Unmount-image  /MountDir:C:\DISM /discard
+
+### Cleanup and delete folder
+DISM /cleanup-wim
+rmdir C:\DISM /S /Q
