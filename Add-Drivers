@@ -1,2 +1,3 @@
 ### Add drivers to online image from folder
-Get-ChildItem "C:\Users\admin\Desktop\PowerEdge R740xd" -Recurse -Filter "*.inf" | ForEach-Object {PNPUtil.exe /add-driver $_.FullName /install}
+$folder = "C:\Users\admin\Desktop\PowerEdge R740xd"
+Get-ChildItem $folder -Recurse -Filter "*.inf" | ForEach-Object {PNPUtil.exe /add-driver $_.FullName /install}
