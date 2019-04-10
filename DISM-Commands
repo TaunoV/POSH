@@ -1,16 +1,20 @@
+### Parameters
+$wim="D:\sources\install.wim"
+$mountdir = "C:\DISM"
+
 ### Get WIM info
-DISM /Get-ImageInfo /imagefile:"E:\sources\boot.wim"
+DISM /Get-ImageInfo /imagefile:$wim
 
 ### Mount WIM
-mkdir C:\DISM
-DISM /Mount-image /imagefile:"D:\sources\boot.wim" /index:1 /MountDir:C:\DISM
+New-Item $mountdir -ItemType Directory
+DISM /Mount-image /imagefile:$wim /index:1 /MountDir:$mountdir
 
 ### Dismount and commit
-DISM /Unmount-image /MountDir:C:\DISM /commit
+DISM /Unmount-image /MountDir:$mountdir /commit
 
 ### Dismount and discard
-DISM /Unmount-image /MountDir:C:\DISM /discard
+DISM /Unmount-image /MountDir:$mountdir /discard
 
 ### Cleanup and delete folder
 DISM /cleanup-wim
-rmdir C:\DISM /S /Q
+Remove-Item $mountdir -Force
