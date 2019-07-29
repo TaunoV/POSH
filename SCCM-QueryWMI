@@ -1,4 +1,4 @@
-# Wildcard = %
+# WQL Query Wildcard = %
 LIKE
 Get-WmiObject -Namespace root/cimv2  -Query "Select * from Win32_diskdrive where Model like 'DELL PERC H730P%'"
 EQUALS
@@ -9,6 +9,9 @@ MORE THAN
 Get-WmiObject -Namespace root/cimv2  -Query "Select * from Win32_bios where SMBIOSBIOSVersion > '1.6.13'"
 AND
 Get-WmiObject -Namespace root/cimv2  -Query "Select * from Win32_PnPSignedDriver where Description='PERC H730P Mini' AND DriverVersion<'6.603.06.00'"
+NOT EQUALS (2 Options)
+Get-WmiObject -Namespace "root\CIMv2\Security\MicrosoftVolumeEncryption" -Query "Select * from Win32_EncryptableVolume where EncryptionMethod !='7'"
+Get-WmiObject -Namespace "root\CIMv2\Security\MicrosoftVolumeEncryption" -Query "Select * from Win32_EncryptableVolume where EncryptionMethod <>'7'"
 ### MS KB
 https://docs.microsoft.com/en-us/windows/desktop/wmisdk/wql-operators
 ### WQL Examples
