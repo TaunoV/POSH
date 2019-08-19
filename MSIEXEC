@@ -1,0 +1,10 @@
+### MSIEXEC example - passing argument into parameter
+
+$msps = Get-ChildItem $PSScriptRoot -Filter *.msp -Recurse
+### Update MSP files
+foreach ($msp in $msps) {
+$msppath = $msp.FullName
+$argument = "/p "+""""+$msppath+""""+" /q"
+$process = Start-Process MSIEXEC -ArgumentList $argument -Wait -PassThru
+$process.ExitCode
+}
