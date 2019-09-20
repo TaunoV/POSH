@@ -1,0 +1,83 @@
+# Site configuration
+$SiteCode = "LOG" # Site code 
+$ProviderMachineName = "SCCM.some.domain" # SMS Provider machine name
+
+# Customizations
+$initParams = @{}
+
+# Do not change anything below this line
+
+# Import the ConfigurationManager.psd1 module 
+if((Get-Module ConfigurationManager) -eq $null) {
+    Import-Module "$($ENV:SMS_ADMIN_UI_PATH)\..\ConfigurationManager.psd1" @initParams 
+}
+
+# Connect to the site's drive if it is not already present
+if((Get-PSDrive -Name $SiteCode -PSProvider CMSite -ErrorAction SilentlyContinue) -eq $null) {
+    New-PSDrive -Name $SiteCode -PSProvider CMSite -Root $ProviderMachineName @initParams
+}
+
+# Web info
+$url = "https://get.skype.com/go/getskype-skypeforwindows"
+$WebResponse=Invoke-WebRequest -Uri $url -Method Head
+$webname = $WebResponse.BaseResponse.ResponseUri.AbsoluteUri
+$setupfilename = ($webname.Split("/"))[-1]
+if (!$setupfilename) {break}
+Write-Host $setupfilename -ForegroundColor Green
+
+# Local info
+$CM_Folder = "LOG:\Application\Microsoft\Skype"
+$Content_Folder = "E:\Sources\Software\Microsoft\Skype"
+$Content_UNC = "\\sccm\Sources$\Software\Microsoft\Skype"
+
+# Application info
+$fullname = $setupfilename.Replace(".exe","")
+$fullname = $fullname.Replace("-"," ")
+$publisher = "Microsoft"
+$version = $fullname.Split(" ")[1]
+$displayname = $fullname.Split(" ")[0]
+$icon = "C:\Icons\Skype.ico"
+
+# Detection Info
+$path = "%ProgramFiles(x86)%\Microsoft\Skype for Desktop"
+$filename = "Skype.exe"
+
+# Application commands
+$install = "$setupfilename /verysilent"
+$uninstall = ""
+
+# Get installer from
+Set-Location C:\
+New-Item -Path $Content_UNC\$version -ItemType Directory -Force
+Start-BitsTransfer -Source $webname -Destination $Content_UNC\$version\$setupfilename
+
+# Create and move app
+Set-Location LOG:
+New-CMApplication -Name $fullname -Publisher $publisher -SoftwareVersion $version -LocalizedName $displayname -IconLocationFile $icon
+Get-CMApplication -Name $fullname | Move-CMObject -FolderPath $CM_Folder
+
+# Create deployment type via HashTables & Splatting
+$newCMDetectionClauseFile = @{ Path = $path;
+                               Filename = $filename;
+                               PropertyType = 'Version';
+                               ExpressionOperator = 'IsEquals';
+                               ExpectedValue = $version;
+                             }                           
+$clause = New-CMDetectionClauseFile @newCMDetectionClauseFile -Value
+
+$addCMScriptDeploymentType = @{ ApplicationName = $fullname;
+                                DeploymentTypeName = $fullname;
+                                InstallCommand = $install;
+                                ContentLocation = "$Content_UNC\$version";
+                                ScriptLanguage = 'VBScript';
+                                ScriptText = 'Temp'
+                              }
+Add-CMScriptDeploymentType @addCMScriptDeploymentType
+
+$setCMScriptDeploymentType = @{ ApplicationName = $fullname;
+                                DeploymentTypeName = $fullname;
+                                AddDetectionClause = $clause;
+                                InstallationBehaviorType = 'InstallForSystem';
+                                LogonRequirementType = 'WhereOrNotUserLoggedOn'
+                              }
+Set-CMScriptDeploymentType @setCMScriptDeploymentType
