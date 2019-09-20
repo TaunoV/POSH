@@ -2,5 +2,5 @@ $install = Start-Process .\Demo_Install.EXE -ArgumentList "/S" -Wait -PassThru
 $install.ExitCode
 
 <#
-SCCM(1810) task sequence paketi install on succes vaid protsessi exit koodiga 0 või 3010, kõik muu on autmaatselt feil.
+SCCM(1810) task sequence paketi install on success vaid protsessi exit koodiga 0 või 3010, kõik muu on autmaatselt feil.
 #>
