@@ -11,7 +11,7 @@ $BasicArray.IsFixedSize
 
 
 ### Create dynamic array
-$MyArrayList = New-Object -TypeName "System.Collections.ArrayList"
+$MyArrayList = New-Object -TypeName "System.Collections.Generic.List[object]"
 $MyArrayList = [System.Collections.ArrayList]@()
 
 ### Test
