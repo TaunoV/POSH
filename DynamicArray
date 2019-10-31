@@ -1,0 +1,20 @@
+### Credit to:
+### https://adamtheautomator.com/powershell-arraylist/?utm_source=redditpowershell&utm_medium=social&utm_campaign=newblogpostnotifications
+
+
+### Create static array
+$BasicArray = "John", "Susie", "Jim", "Johnny", "Carrie"
+
+### Test
+$BasicArray.GetType()
+$BasicArray.IsFixedSize
+
+
+### Create dynamic array
+$MyArrayList = New-Object -TypeName "System.Collections.ArrayList"
+$MyArrayList = [System.Collections.ArrayList]@()
+
+### Test
+$MyArrayList = "John", "Susie", "Jim", "Johnny", "Carrie"
+$MyArrayList.GetType()
+$MyArrayList.IsFixedSize
