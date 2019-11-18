@@ -1,5 +1,5 @@
 ### Define Volume
-$volume = "E:"
+$volume = Get-BitLockerVolume | where MountPoint -NE "C:"
 ### Encrypt Volume
 $key = Enable-BitLocker -MountPoint $volume -RecoveryPasswordProtector -SkipHardwareTest -UsedSpaceOnly
 Backup-BitLockerKeyProtector -MountPoint $volume -KeyProtectorId $key.KeyProtector.KeyProtectorId -ErrorAction Stop
