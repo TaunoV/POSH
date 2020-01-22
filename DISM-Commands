@@ -1,5 +1,5 @@
 ### Parameters
-$wim="D:\sources\install.wim"
+$wim="C:\Program Files\Microsoft Configuration Manager\OSD\boot\x64\boot.wim"
 $mountdir = "C:\DISM"
 
 ### Get WIM info
@@ -8,6 +8,10 @@ DISM /Get-ImageInfo /imagefile:$wim
 ### Mount WIM
 New-Item $mountdir -ItemType Directory
 DISM /Mount-image /imagefile:$wim /index:1 /MountDir:$mountdir
+
+### Load Reg Hive for editing
+reg load HKLM\DISMHIVE "$mountdir\Windows\System32\Config\Software" ### Hardware, Security, Software, System
+reg unload HKLM\DISMHIVE
 
 ### Dismount and commit
 DISM /Unmount-image /MountDir:$mountdir /commit
