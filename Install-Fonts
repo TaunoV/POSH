@@ -1,0 +1,8 @@
+### Fetch fonts to install from $PSScriptRoot
+$fonts = Get-ChildItem $PSScriptRoot\*.ttf -Recurse
+### Install destination
+$Destination = (New-Object -ComObject Shell.Application).Namespace(0x14)
+### Install all fonts
+foreach ($font in $fonts) {
+$Destination.CopyHere($Font.FullName,0x10)
+}
