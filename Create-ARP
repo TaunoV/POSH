@@ -1,0 +1,11 @@
+### Paramater set
+$ARPname = "Some ARP Entry"
+$Publisher = "Engineering"
+$Version = "1.0"
+### Create ARP Table
+$path = New-Item HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$ARPname
+New-ItemProperty -Path $path.PSPath -Name "DisplayName" -Value $ARPname -PropertyType String
+New-ItemProperty -Path $path.PSPath -Name "Publisher" -Value $Publisher  -PropertyType String
+New-ItemProperty -Path $path.PSPath -Name "ProductVersion" -Value $Version -PropertyType String
+New-ItemProperty -Path $path.PSPath -Name "DisplayVersion" -Value $Version -PropertyType String
+New-ItemProperty -Path $path.PSPath -Name "UninstallString" -Value "CMD.exe /c reg delete ""$path"" /f"  -PropertyType String
