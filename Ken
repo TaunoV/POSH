@@ -1,0 +1,38 @@
+# Value1
+$initalvalue_1 = 100
+$timeinc_1 = 7
+$increase_1 = 4
+# Value2
+$initalvalue_2 = 300
+$timeinc_2 = 4
+$increase_2 = 8
+# Reset paramaters
+$y = 0
+$param1 = $false
+$param2 = $false
+$pos1 = $false
+$pos2 = $false
+$x = $false
+#Main look
+do
+{
+    $y
+    $param1 = $y/$timeinc_1
+    $param2 = $y/$timeinc_2
+
+    [bool]$param1_1 = $param1 -is [int]
+    [bool]$param2_1 = $param2 -is [int]
+
+        if (($param1_1+$param2_1) -eq 2) {
+        $pos1 = ($param1*$increase_1)+$initalvalue_1
+        $pos2 = ($param2*$increase_2)+$initalvalue_2
+    
+            if ($pos1 -eq $pos2) {$x = $true} 
+            }
+    $y++ 
+        }    
+      
+
+until ($x -eq $true)
+
+$pos1
