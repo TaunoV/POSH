@@ -1,0 +1,7 @@
+### Example1 - Get CM Application deplyment type content location (UNC Path)
+[xml]$xmldata = (Get-CMDeploymentType -ApplicationName "Skype 8.56.0.103").SDMPackageXML
+$xmldata.AppMgmtDigest.DeploymentType.Installer.Contents.Content.Location
+
+### Example2 - Get CM application optional reference field
+[xml]$xmldata = (Get-CMApplication -ApplicationName "Skype 8.56.0.103").SDMPackageXML
+$xmldata.AppMgmtDigest.Application.CustomId.'#text'
