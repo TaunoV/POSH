@@ -3,7 +3,7 @@
 ### Define Columns
 $columns = "A","B"
 ### Create Table object
-$table = New-Object system.Data.DataTable “$filereport”
+$table = New-Object system.Data.DataTable
 ### Add Columns  
 foreach ($column in $columns) {
 $column = New-Object system.Data.DataColumn $column,([string])
