@@ -1,51 +1,20 @@
-<#
-.Synopsis
-   POSH Tabel väljavõtte tekitamine
-.DESCRIPTION
-   Kasuta seda näidist, et paremini mõista tabelväljavõtte tekitamist
-.EXAMPLE
-   Get-FolderStats C:\Users
-.EXAMPLE
-   Get-FolderStats C:\Users\Administrator
-#>
-function Get-FolderStats
-{
-    [CmdletBinding()]
-    [Alias()]
-    [OutputType([int])]
-    Param
-    (
-        # Defineeri path
-        [Parameter(Mandatory=$true,
-                   ValueFromPipelineByPropertyName=$true,
-                   Position=0)]
-        $folder
-    )
+### Generate table object
 
-    Begin
-    {
-    ### Define Columns
-    $columns = "Folders","Files","Errors"
-    ### Create Table object
-    $table = New-Object system.Data.DataTable “$filereport”
-    foreach ($column in $columns) {
-    $column = New-Object system.Data.DataColumn $column,([string])
-    $table.columns.add($column)}
-    }
-    Process
-    {
-    ### Add new row to table
-    $row = $table.NewRow()
-    ### Gather Data
-    $Error.Clear()
-    $row.Folders = (Get-ChildItem $folder -Force -Recurse -Directory -ErrorAction SilentlyContinue -WarningAction SilentlyContinue).Count
-    $row.Files = (Get-ChildItem $folder -Force -Recurse -File -ErrorAction SilentlyContinue -WarningAction SilentlyContinue).Count
-    $row.Errors = $Error.count
-    ### Write Data to table
-    $table.Rows.Add($row)
-    }
-    End
-    {
-    $table | format-table -AutoSize
-    }
-}
+### Define Columns
+$columns = "A","B"
+### Create Table object
+$table = New-Object system.Data.DataTable “$filereport”
+### Add Columns  
+foreach ($column in $columns) {
+$column = New-Object system.Data.DataColumn $column,([string])
+$table.columns.add($column)}
+
+### Fill with data (this section goes into loop)  
+
+### Add Row
+$row = $table.NewRow()
+### Add Data to row
+$row.A = "Value for A"
+$row.B = "Value for B"
+### Write Data to table
+$table.Rows.Add($row)
