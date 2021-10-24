@@ -1,0 +1,29 @@
+### Powershell AOE3:AD City level and skillpoint editor
+
+### Specify savegame folder
+$savegamefolder = "C:\Users\user\Documents\My Games\Age of Empires 3\Savegame"
+
+### XML format function from: https://devblogs.microsoft.com/powershell/format-xml/
+function Format-XML ([xml]$xml, $indent=2)
+{
+    $StringWriter = New-Object System.IO.StringWriter
+    $XmlWriter = New-Object System.XMl.XmlTextWriter $StringWriter
+    $xmlWriter.Formatting = “indented”
+    $xmlWriter.Indentation = $Indent
+    $xml.WriteContentTo($XmlWriter)
+    $XmlWriter.Flush()
+    $StringWriter.Flush()
+    Write-Output $StringWriter.ToString()
+}
+
+### Load city XML's
+$cities = Get-ChildItem $savegamefolder -Filter sp_*.xml
+
+### Loop and modify values
+foreach ($city in $cities) {
+[xml]$xmldata = Get-Content $city.FullName
+$xmldata.savedhomecity.skillpoints = "200"
+$xmldata.savedhomecity.level = "99"
+$newpath = $city.FullName
+Format-XML $xmldata.OuterXml | Out-File $newpath -Force
+}
