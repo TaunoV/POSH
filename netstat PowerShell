@@ -1,0 +1,2 @@
+$process=@{Name="Process Name";Expression ={(Get-Process -Id $_.OwningProcess).Name}}
+Get-NetTCPConnection | Select-Object -Property LocalAddress,Localport,RemoteAddress, RemotePort, State, AppliedSetting, $process | Out-GridView 
